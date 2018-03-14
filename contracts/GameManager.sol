@@ -1,8 +1,8 @@
 pragma solidity ^0.4.17;
 import { RockPaperScissors } from './RockPaperScissors.sol';
 
-contract RockPaperScissorsRemote{
-  function resolveWinner() view public returns (int8){}
+interface RockPaperScissorsRemote{
+  function resolveWinner() public view returns (int8);
 }
 
 contract GameManager {
@@ -19,7 +19,7 @@ contract GameManager {
   mapping(address => UsersBalance) public balances;
   mapping(uint256 => GameInstance) public gameList;
 
-  event SolutionRevealed(string);
+  event SolutionRevealed(address player);
 
   function charge() public  payable {
     balances[msg.sender].balance += msg.value;
@@ -42,34 +42,34 @@ contract GameManager {
     balances[p1].frozenBalance += bet;
     balances[p2].frozenBalance += bet;
     RockPaperScissors g = new RockPaperScissors(p1, p2);
-    gameList[gameId++] = GameInstance(g, bet, false);
+    gameId++;
+    gameList[gameId] = GameInstance(g, bet, false);
 
     return (g, gameId);
   }
 
   function collectWinnings(uint256 game_id) public {
-    GameInstance matching = gameList[gameId];
+    GameInstance storage matching = gameList[game_id];
     require(matching.paidOut == false);
-    int8 result = RockPaperScissorsRemote(matching.game).resolveWinner();
-    // int8 result = -1;
-    SolutionRevealed("string");
+    SolutionRevealed(address(matching.game));
+    int8 result = matching.game.resolveWinner();
     uint256 bet = matching.bet;
     matching.paidOut = true;
     if (result == 1){
-      balances[address(RockPaperScissors(matching.game).player1)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player2)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player1)].balance += 2*bet;
+      balances[address(matching.game.player1())].frozenBalance -= bet;
+      balances[address(matching.game.player2())].frozenBalance -= bet;
+      balances[address(matching.game.player1())].balance += 2*bet;
     }
     if (result == -1){
-      balances[address(RockPaperScissors(matching.game).player1)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player2)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player2)].balance += 2*bet;
+      balances[address(matching.game.player1())].frozenBalance -= bet;
+      balances[address(matching.game.player2())].frozenBalance -= bet;
+      balances[address(matching.game.player2())].balance += 2*bet;
     }
     if (result == 0){
-      balances[address(RockPaperScissors(matching.game).player1)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player2)].frozenBalance -= bet;
-      balances[address(RockPaperScissors(matching.game).player2)].balance += bet;
-      balances[address(RockPaperScissors(matching.game).player1)].balance += bet;
+      balances[address(matching.game.player1())].frozenBalance -= bet;
+      balances[address(matching.game.player2())].frozenBalance -= bet;
+      balances[address(matching.game.player2())].balance += bet;
+      balances[address(matching.game.player1())].balance += bet;
     }
   }
 }

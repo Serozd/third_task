@@ -56,7 +56,7 @@ contract RockPaperScissors {
     playersJoined++;
   }
 
-  function  resolveWinner() view public returns (int8) {
+  function  resolveWinner() public view returns (int8) {
     if ((maxPlayers == playersJoined) && phase){
       address[2] memory players = [player1, player2];
       uint8[2] memory playersResults;

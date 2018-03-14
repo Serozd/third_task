@@ -46,7 +46,7 @@ contract('GameManager', function(accounts) {
         	}).then(function() {
         		return instance.createGame(accounts[1], accounts[2], web3.toWei(0.1), {from: accounts[0]});
         	}).then(function() {
-        		return instance.gameList(0);
+        		return instance.gameList(1);
         	}).then(function (game) {
         		assert.equal(game[1].valueOf(), web3.toWei(0.1), "should have 0.1 eth locked");
         	});
@@ -59,13 +59,11 @@ contract('GameManager', function(accounts) {
         	}).then(function() {
         		return instance.createGame(accounts[1], accounts[2], web3.toWei(0.1), {from: accounts[0]});
         	}).then(function() {
-        		return instance.gameList(0);
+        		return instance.gameList(1);
         	}).then(function (game) {
         		return RockPaperScissors.at(game[0]);
         	}).then(function(inst) {
-        		console.log((new sha3.SHA3Hash(256)).update(password1).digest('hex'));
         		return inst.play(password1_hash, {from: accounts[1]}).then(function() {
-        			console.log((new sha3.SHA3Hash(256)).update(password2).digest('hex'));
 		            return inst.play(password2_hash, {from: accounts[2]});
 		        }).then(function() {
 		            return inst.reveal.sendTransaction(password2, {from: accounts[2]});
@@ -73,9 +71,9 @@ contract('GameManager', function(accounts) {
 		            return inst.reveal.sendTransaction(password1, {from: accounts[1]});
 		        });
     		}).then(function() {
-    			return instance.collectWinnings(0);
+                return instance.collectWinnings(1);
     		}).then(function() {
-    			return instance.gameList(0);
+                return instance.gameList(1);
     		}).then(function(game) {
     			assert.equal(game[2], true, "should be collected");
     		});
