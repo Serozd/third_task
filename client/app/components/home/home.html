@@ -1,9 +1,11 @@
-<navbar></navbar>
-<header>
-  <hero></hero>
-</header>
-<main>
+
+	<label>Contract Address:<input ng-model="$ctrl.instanceAddress"></label><br>
+  <label>Source Address:<input ng-model="$ctrl.sourceAddress"></label><br>
+  <label>Provider RPC URL:<input ng-model="$ctrl.rpcProviderUrl"></label><br>
   <div>
-    <h1>Found in {{ $ctrl.name }}.html</h1>
+    <ul>
+    	<li ng-repeat="opt in ['r','p','s']"><label>{{ opt }} <input type="radio" name="vote" value="{{ opt }}" ng-model="$ctrl.vote"></label></li>
+    	<button ng-click="$ctrl.submit()">submit</button>
+    </ul>
   </div>
-</main>
+

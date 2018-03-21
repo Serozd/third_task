@@ -1,5 +1,11 @@
-<navbar></navbar>
-<h1>{{ $ctrl.name }}</h1>
-<section>
-  About us.
+<h1>Propose game</h1>
+  <label>Contract Address:<input ng-model="$ctrl.instanceAddress"></label><br>
+  <label>Source Address:<input ng-model="$ctrl.sourceAddress"></label><br>
+  <label>Provider RPC URL:<input ng-model="$ctrl.rpcProviderUrl"></label><br>
+<label>player Address: <input type="text" ng-model="$ctrl.player2"></label><br>
+<label>Bet: <input type="number" ng-model="$ctrl.bet"></label><br>
+<button ng-click="$ctrl.submit()">submit</button>
+<section ng-if="$ctrl.proposalId != -1">
+  your proposal is {{ $ctrl.proposalId }}
 </section>
+

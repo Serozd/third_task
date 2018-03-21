@@ -1,0 +1,8 @@
+<div>
+  <h1>Accept game proposal</h1>
+<label>Contract Address:<input ng-model="$ctrl.instanceAddress"></label><br>
+  <label>Source Address:<input ng-model="$ctrl.sourceAddress"></label><br>
+  <label>Provider RPC URL:<input ng-model="$ctrl.rpcProviderUrl"></label><br>
+  Player {{ $ctrl.player }} proposes game with bet: {{ $ctrl.bet }}.<br>
+  <button ng-click="$ctrl.accept()">accept</button>
+</div>
